@@ -12,6 +12,7 @@ import re
 import glob
 
 
+
 app = Flask(__name__)
 
 # Use a service account
@@ -60,33 +61,41 @@ def welcome():
     test_data  = [60,30*12, "Senior Engineer", "Little to none"] 
     param = {'iterations': 50}
     model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
-    model.load_model(glob.glob('../data/model_*')[0])
+    model.load_model(glob.glob('./data/model_*')[0])
     # make the prediction using the resulting model
     preds_raw_vals = model.predict(test_data)
     return str(preds_raw_vals)
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    req = request.get_json()
-    metrics = ["modelID", "jurisdiction", "age", "employment_length", "employment_type", "similar_employment", "salary", "city", "notice_given", "severance_amount"]
-    metrics_values = [req.get(metric) for metric in metrics]
-    
-    ##ml model inputs: age (years), employment_type, similar_employment
-    ##test_data = [metrics_values[2], metrics_values[3], metrics_values[4], metrics_values[5]]
-    test_data  = [60,30*12, "Senior Engineer", "Little to none"] 
-    param = {'iterations': 50}
-    model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
-    model.load_model(glob.glob('../data/model_*')[0])
-    # make the prediction using the resulting model
-    preds_raw_vals = model.predict(test_data)
-    
-    response = {
-    "months": round(preds_raw_vals, 2),
-    "adjudication": round(((metrics_values[metrics.index("salary")]/12) * (preds_raw_vals - metrics_values[metrics.index("notice_given")]) - metrics_values[metrics.index("severance_amount")]), 2),
-    "link": generate_url(metrics_values[metrics.index("city")])
-    }
+    try:
+        req = request.get_json()
+        print(req)
+        metrics = ["modelID", "jurisdiction", "age", "employment_length", "employment_type", "similar_employment", "salary", "city", "notice_given", "severance_amount"]
+        metrics_values = [req.get(metric) for metric in metrics]
+        print(metrics_values)
+        
+        ##ml model inputs: age (years), employment_type, similar_employment
+        test_data = [metrics_values[2], metrics_values[3], metrics_values[4], metrics_values[5]]
+        print(test_data)
+        ##test_data  = [60,30*12, "Senior Engineer", "Little to none"] 
+        param = {'iterations': 50}
+        model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
+        model.load_model(glob.glob('./data/model_*')[0])
+        # make the prediction using the resulting model
+        preds_raw_vals = model.predict(test_data)
+        
+        response = {
+        "months": round(preds_raw_vals, 2),
+        "adjudication": round(((metrics_values[metrics.index("salary")]/12) * (preds_raw_vals - metrics_values[metrics.index("notice_given")]) - metrics_values[metrics.index("severance_amount")]), 2),
+        "link": generate_url(metrics_values[metrics.index("city")])
+        }
 
-    return jsonify(response), 200
+        return str(response)
+        
+    except Exception as e:
+        return "sorry I'm still learning I am not sure how to respond to that"
+
 
 
 
@@ -95,7 +104,7 @@ sample curl post request for (store):
 
 curl --header "Content-Type: application/json" --request POST --data '{                                                                                          
     "modelID": "wrongful-dismissal",
-    "conversation": [("bot", "hello"), ("user", "hi how is it going?")],
+    "conversation": [["bot", "hello"], ["user", "hi how is it going?"]],
     "value": 5,
     "comments": "very helpful tool!"
 }' http://127.0.0.1:5000/store
@@ -128,8 +137,7 @@ def store():
         u'timestamp': pendulum.now().to_day_datetime_string()
     })
     
-    return "db updated", 200
-
+    return "db updated"
 
 if __name__ == '__main__':
     app.run()

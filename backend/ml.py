@@ -25,15 +25,15 @@ model = CatBoostRegressor(iterations=8, depth=8, learning_rate=0.5, loss_functio
 # train the model
 model.fit(X=train_data, y=train_labels, cat_features=[2, 3])
 
-# now = re.sub(r'[^0-9a-zA-Z]', '_', str(datetime.datetime.now()).split('.')[0])
-# model.save_model(f'../data/model_{now}')
-#
-# model_path = glob.glob('../data/model_*')[0]
-# new_model = CatBoost(param)
-# new_model.load_model(model_path)
-#
-# # make the prediction using the resulting model
-# preds_raw_vals = new_model.predict(test_data, prediction_type='RawFormulaVal')
-# print("Raw months:", preds_raw_vals)
+now = re.sub(r'[^0-9a-zA-Z]', '_', str(datetime.datetime.now()).split('.')[0])
+model.save_model(f'../data/model_{now}')
+
+model_path = glob.glob('../data/model_*')[0]
+new_model = CatBoost(param)
+new_model.load_model(model_path)
+
+# make the prediction using the resulting model
+preds_raw_vals = new_model.predict(test_data, prediction_type='RawFormulaVal')
+print("Raw months:", preds_raw_vals)
 
 print("Raw months:", model.predict(test_data))
