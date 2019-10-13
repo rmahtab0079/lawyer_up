@@ -5,12 +5,17 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import pendulum
 import time
+from catboost import CatBoost, CatBoostRegressor
+import json
+import datetime
+import re
+import glob
 
 
 app = Flask(__name__)
 
 # Use a service account
-cred = credentials.Certificate('lawyer-up-dubhacks-firebase-adminsdk-bg7wy-142f040934.json')
+cred = credentials.Certificate('lawyer-up-dubhacks-firebase-adminsdk-bg7wy-a410db3409.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
@@ -25,14 +30,11 @@ sample_input = {
     "similar_employment": "little to none",
     "jurisdiction": "British Columbia",
     "city": "Vancouver",
-    "salary": 30000
+    "salary": 30000,
+    "notice_given": 6,
+    "severance_amount" : 200
 }
 
-response = {
-    "months": 6.27,
-    "adjudication": 5000,
-    "link": generate_url(sample_input["city"])
-}
 
 
 """
@@ -50,21 +52,48 @@ curl --header "Content-Type: application/json" --request POST --data '{         
 
 """
 
-@app.route("/")
+@app.route("/", methods = ["GET"])
 def welcome():
-    return "welcome to lawyer-now api"
+    #metrics_values = [req.get(metric) for metric in metrics]
+    ##ml model inputs: age (years), employment_type, similar_employment
+    ##test_data = [metrics_values[2], metrics_values[3], metrics_values[4], metrics_values[5]]
+    test_data  = [60,30*12, "Senior Engineer", "Little to none"] 
+    param = {'iterations': 50}
+    model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
+    model.load_model(glob.glob('../data/model_*')[0])
+    # make the prediction using the resulting model
+    preds_raw_vals = model.predict(test_data)
+    return str(preds_raw_vals)
 
 @app.route("/predict", methods=["POST"])
-def json_example():
+def predict():
     req = request.get_json()
-    print(req)
+    metrics = ["modelID", "jurisdiction", "age", "employment_length", "employment_type", "similar_employment", "salary", "city", "notice_given", "severance_amount"]
+    metrics_values = [req.get(metric) for metric in metrics]
+    
+    ##ml model inputs: age (years), employment_type, similar_employment
+    ##test_data = [metrics_values[2], metrics_values[3], metrics_values[4], metrics_values[5]]
+    test_data  = [60,30*12, "Senior Engineer", "Little to none"] 
+    param = {'iterations': 50}
+    model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
+    model.load_model(glob.glob('../data/model_*')[0])
+    # make the prediction using the resulting model
+    preds_raw_vals = model.predict(test_data)
+    
+    response = {
+    "months": round(preds_raw_vals, 2),
+    "adjudication": round(((metrics_values[metrics.index("salary")]/12) * (preds_raw_vals - metrics_values[metrics.index("notice_given")]) - metrics_values[metrics.index("severance_amount")]), 2),
+    "link": generate_url(metrics_values[metrics.index("city")])
+    }
+
     return jsonify(response), 200
+
 
 
 """
 sample curl post request for (store):
 
-curl --header "Content-Type: application/json" --request POST --data '{                                                                                          ─╯
+curl --header "Content-Type: application/json" --request POST --data '{                                                                                          
     "modelID": "wrongful-dismissal",
     "conversation": [("bot", "hello"), ("user", "hi how is it going?")],
     "value": 5,
@@ -104,5 +133,3 @@ def store():
 
 if __name__ == '__main__':
     app.run()
-
-    
