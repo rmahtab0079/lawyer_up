@@ -1,0 +1,3 @@
+employment_type = ["Executive level management", "First tier manager or supervisor", "Middle management", "Professional", "Retail / clerical / administrative", "Sales", "Skilled labour", "Technical", "Unskilled labour", "Upper management", "Other"]
+employment_availability = ["many but competitive", "many and high demand", "little to none", "some"] 
+locations = ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Northwest Territories", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon", "Canada"]
