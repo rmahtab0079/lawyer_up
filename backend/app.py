@@ -1,8 +1,7 @@
-from flask import Flask, jsonify
-import webbrowser
+from flask import Flask, jsonify, request
+import categories
 
 app = Flask(__name__)
-
 
 def generate_url(city):
     return "https://www.yellowpages.ca/search/si/1/Employment+Lawyers/" + city 
@@ -24,13 +23,12 @@ response = {
 }
 
 
-employment_type = ["Executive level management", "First tier manager or supervisor", "Middle management", "Professional", "Retail / clerical / administrative", "Sales", "Skilled labour", "Technical", "Unskilled labour", "Upper management", "Other"]
-employment_availability = ["many but competitive", "many and high demand", "little to none", "some"] 
-locations = ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Northwest Territories", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon", "Canada"]
 
-@app.route("/")
-def predict():
-    return jsonify(response)
+@app.route("/predict", methods=["POST"])
+def json_example():
+    req = request.get_json()
+    print(req)
+    return jsonify(response), 200
 
 
 if __name__ == '__main__':
