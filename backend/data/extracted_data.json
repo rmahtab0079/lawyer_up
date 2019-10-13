@@ -1,0 +1,81 @@
+{
+  "data": [
+    {
+      "age": 37,
+      "employment_length": 119,
+      "employment_type": "Engineer",
+      "similar_employment": "Many but competitive",
+      "adjudication": 14
+    },
+    {
+      "age": 45,
+      "employment_length": 132,
+      "employment_type": "Engineer",
+      "similar_employment": "Many but competitive",
+      "adjudication": 15
+    },
+    {
+      "age": 46,
+      "employment_length": 140,
+      "employment_type": "Engineer",
+      "similar_employment": "Many but competitive",
+      "adjudication": 15
+    },
+    {
+      "age": 46,
+      "employment_length": 210,
+      "employment_type": "Senior Engineer",
+      "similar_employment": "Some",
+      "adjudication": 18
+    },
+    {
+      "age": 46,
+      "employment_length": 135,
+      "employment_type": "Engineer",
+      "similar_employment": "Many but competitive",
+      "adjudication": 15
+    },
+    {
+      "age": 55,
+      "employment_length": 120,
+      "employment_type": "Senior Engineer",
+      "similar_employment": "Some",
+      "adjudication": 20
+    },
+    {
+      "age": 50,
+      "employment_length": 232,
+      "employment_type": "Engineer",
+      "similar_employment": "Some",
+      "adjudication": 20
+    },
+    {
+      "age": 33,
+      "employment_length": 108,
+      "employment_type": "Scientist",
+      "similar_employment": "Little to none",
+      "adjudication": 12
+    },
+    {
+      "age": 60,
+      "employment_length": 444,
+      "employment_type": "Upper Management",
+      "similar_employment": "Little to none",
+      "adjudication": 24
+    },
+    {
+      "age": 55,
+      "employment_length": 360,
+      "employment_type": "Sales",
+      "similar_employment": "Some",
+      "adjudication": 18
+    },
+    {
+      "age": 35,
+      "employment_length": 14,
+      "employment_type": "Manager",
+      "similar_employment": "Many but competitive",
+      "adjudication": 6
+    }
+  ]
+}
