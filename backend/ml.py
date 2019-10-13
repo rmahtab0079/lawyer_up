@@ -14,16 +14,14 @@ def parse_y(d):
 
 
 # read the dataset
-with open('../data/mock_data.json', 'r') as data_file:
+with open('../data/fuzzy_data.json', 'r') as data_file:
     data = json.load(data_file)['data']
 
 train_data = list(map(parse_x, data))
 train_labels = list(map(parse_y, data))
-test_data = [[60, 40 * 12, "Senior Engineer", "Many but competitive"], [60, 2 * 12, 'Senior Engineer', 'Many but competitive']]
+test_data = [[30, 10 * 12, "Senior Engineer", "Many but competitive"], [60, 30 * 12, 'C-Suite', 'Little to none']]
 
-
-param = {'iterations': 50}
-model = CatBoostRegressor(iterations=3, depth=8, learning_rate=1, loss_function='RMSE')
+model = CatBoostRegressor(iterations=8, depth=8, learning_rate=0.5, loss_function='RMSE')
 # train the model
 model.fit(X=train_data, y=train_labels, cat_features=[2, 3])
 

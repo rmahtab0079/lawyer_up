@@ -1,3 +1,17 @@
-employment_type = ["C-Suite", "Manager", "Engineer", "Senior Engineer", "Retail / Clerical / Administrative", "Sales", "Skilled Labour", "Unskilled Labour", "Upper Management", "Other", "Scientist"]
-employment_availability = ["Many but competitive", "Many and high demand", "Little to none", "Some"] 
-locations = ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Northwest Territories", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon", "Canada"]
+employment_type = [
+    "C-Suite",
+    "Upper Management",
+    "Senior Engineer",
+    "Manager",
+    "Engineer",
+    "Scientist",
+    "Skilled Labour",
+    "Sales",
+    "Retail / Clerical / Administrative",
+    "Unskilled Labour",
+    "Other",
+]
+employment_availability = ["Many and high demand", "Many but competitive", "Some", "Little to none"]
+locations = ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia",
+             "Northwest Territories", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon",
+             "Canada"]
